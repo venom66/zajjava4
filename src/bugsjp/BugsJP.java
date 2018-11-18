@@ -10,6 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import encje.*;
 import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -24,15 +25,22 @@ public class BugsJP {
      */
     public static void main(String[] args) {
 
+        addBug("b001", "Lost wifi connection");
+        addBug("b002", "Turning off wifi does not work");
+        addBug("b003", "Execution slow when on battery");
+        for (Bug b : findBugs("%wifi%")) {
+            System.out.println("Number: " + b.getNum() + " Description: " + b.getDescription());
+        }
+        bulkDeleteBugs();
+
     }
 
     public static List<Bug> findBugs(String pKeyword) {
         EntityManager em = emf.createEntityManager();
         List<Bug> wyn = null;
         try {
-            wyn =   ...         
-        } 
-        catch (Exception e) {
+             wyn = em.createNamedQuery("findByKeyword").setParameter("keyword", "%" + pKeyword + "%").getResultList();  
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             em.close();
@@ -41,7 +49,7 @@ public class BugsJP {
     }
 
     public static void addBug(String pNum, String pDesc) {
-        Bug b =  new Bug();     
+        Bug b = new Bug();
         b.setNum(pNum);
         b.setDescription(pDesc);
         persist(b);
