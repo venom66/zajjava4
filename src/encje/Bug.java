@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -18,12 +19,44 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="BUGS")
+@NamedQuery(name = "findByKeyword", query = "... like :keyword")
 public class Bug implements Serializable {
+
+    /**
+     * @return the num
+     */
+    public String getNum() {
+        return num;
+    }
+
+    /**
+     * @param num the num to set
+     */
+    public void setNum(String num) {
+        this.num = num;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    private String num;         
+    private String description;
 
     public Long getId() {
         return id;
